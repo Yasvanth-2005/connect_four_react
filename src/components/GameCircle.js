@@ -1,19 +1,16 @@
 import React from 'react'
+import '../style.css'
 
 const clickMsg = (id) =>{
   alert("You clicked "+ id);
 }
 
-export default function GameCircle({id,color,children}) {
-  const style = {
-    backgroundColor : color,
-    width:100,
-    height:100,
-    borderRadius:'50%',
-    margin:10
+export default function GameCircle({id,children}) {
+  const circleClicked = (id) =>{
+    console.log('circle clicked '+id);
   }
   return (
-    <div style={style} onClick={() => clickMsg(id)}>
+    <div onClick={() => clickMsg(id)} className={`gamecircle ${id%2 === 0?"odd":"even"}`}>
         {children}
     </div>
   )
