@@ -1,41 +1,53 @@
-import React,{useState} from "react";
+import React, { useState, useEffect } from "react";
 import GameCircle from "./GameCircle";
 import '../style.css';
 
+const no_player = 0;
+const player_1 = 1;
+const player_2 = 2;
 
+const GameBoard = () => {
+    const [gameBoard, setGameBoard] = useState(Array(16).fill(no_player));
+    const [currentPlayer, setCurrentPlayer] = useState(player_1);
 
-const GameBoard = () =>{
-    const [gameBoard,setGameBoard] = useState(Array(16).fill(0))
-    const circleClicked = (id) =>{
-        alert('circle clicked ' + id);
-        gameBoard[id] = 1;
-        setGameBoard(gameBoard)
+    const circleClicked = (id) => {
+        setGameBoard(prev => {
+            return prev.map((circle, pos) => {
+                if (pos === id) return currentPlayer;
+                return circle;
+            })
+        })
+        setCurrentPlayer(currentPlayer === player_1 ? player_2 : player_1);
     }
 
- const renderCircle = (id) => {
-    return(
-        <GameCircle id={id} className={`player-${gameBoard[id]}`} onCircleClicked={circleClicked} />
-    )
- }
+    const renderCircle = (id) => {
+        return (
+            <GameCircle
+                key={id}
+                id={id}
+                className={`player-${gameBoard[id]}`}
+                onCircleClicked={circleClicked}
+            />
+        )
+    }
 
-    return(
+    useEffect(() => {
+        initBoard();
+    }, []);
+
+    const initBoard = () => {
+        setCurrentPlayer(player_1);
+        setGameBoard(Array(16).fill(no_player));
+    }
+
+    const circles = [];
+    for (let i = 0; i < 16; i++) {
+        circles.push(renderCircle(i));
+    }
+
+    return (
         <div className="gameboard">
-           {renderCircle(0)}
-           {renderCircle(1)}
-           {renderCircle(2)}
-           {renderCircle(3)}
-           {renderCircle(4)}
-           {renderCircle(5)}
-           {renderCircle(6)}
-           {renderCircle(7)}
-           {renderCircle(8)}
-           {renderCircle(9)}
-           {renderCircle(10)}
-           {renderCircle(11)}
-           {renderCircle(12)}
-           {renderCircle(13)}
-           {renderCircle(14)}
-           {renderCircle(15)}
+            {circles}
         </div>
     )
 }
