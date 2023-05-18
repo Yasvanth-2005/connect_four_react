@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 import GameCircle from "./GameCircle";
-import '../style.css';
+import Footer from './footer'
+import Header from './header'
+import '../style.css'
+import {isWinner} from './winner_combinations'
 
 const no_player = 0;
 const player_1 = 1;
@@ -22,12 +25,7 @@ const GameBoard = () => {
 
     const renderCircle = (id) => {
         return (
-            <GameCircle
-                key={id}
-                id={id}
-                className={`player-${gameBoard[id]}`}
-                onCircleClicked={circleClicked}
-            />
+            <GameCircle key={id} id={id} className={`player-${gameBoard[id]}`} onCircleClicked={circleClicked} />
         )
     }
 
@@ -46,9 +44,13 @@ const GameBoard = () => {
     }
 
     return (
-        <div className="gameboard">
-            {circles}
-        </div>
+        <>
+            <Header player={currentPlayer}/>
+            <div className="gameboard">
+                {circles}
+            </div>
+            <Footer />
+        </>
     )
 }
 
